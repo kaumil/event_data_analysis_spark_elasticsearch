@@ -1,0 +1,9 @@
+/.cache/*
+/Resources/*
+/Dockerfiles/*
+/.local/*
+/.jupyter/*
+/.ipython/*
+/.ipynb_checkpoints/*
+/spark/.ipynb_checkpoints/*
+*.pyc

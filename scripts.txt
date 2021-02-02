@@ -1,0 +1,2 @@
+#to configure users for hadoop
+docker exec -i hadoop bash < hadoop_conf/hadoop-docker.sh
