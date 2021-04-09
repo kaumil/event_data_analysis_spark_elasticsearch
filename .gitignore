@@ -4,6 +4,10 @@
 /.local/*
 /.jupyter/*
 /.ipython/*
+/.ivy/*
 /.ipynb_checkpoints/*
 /spark/.ipynb_checkpoints/*
+.bash_history
+.python_history
+.wget-hsts
 *.pyc

@@ -1,2 +1,10 @@
 #to configure users for hadoop
 docker exec -i hadoop bash < hadoop_conf/hadoop-docker.sh
+
+# to get files from hdfs to local
+hadoop fs -get /csv-data/*.csv /destination/path
+yum install crontabs
+chkconfig crond on
+systemctl enable crond
+
+crontab -l | { cat; echo "* * * * * /usr/bin/sh script.sh"; } | crontab -

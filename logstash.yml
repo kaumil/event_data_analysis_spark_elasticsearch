@@ -1,0 +1,7 @@
+logging:
+  to_files: true
+  files:
+    path: /var/log/filebeat/
+    name: filebeat.log
+    rotateeverybytes: 51002
+    keepfiles: 10
