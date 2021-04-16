@@ -1,0 +1,10 @@
+filebeat.inputs:
+- type: http_endpoint
+  enabled: true
+  listen_address: hdfs://hadoop-filebeat
+  listen_port: 8020
+  content_type: ""
+  url: "/csv-data/"
+output.logstash:
+  enabled: true
+  hosts: ["logstash:5044"]
