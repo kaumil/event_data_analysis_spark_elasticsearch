@@ -25,33 +25,6 @@ services:
     networks:
       - elastic
 
-  logstash:
-    container_name: logstash
-    build:
-      context: elk/logstash/
-      args:
-        ELK_VERSION: $ELK_VERSION
-    volumes:
-      - type: bind
-        source: ./elk/logstash/config/logstash.yml
-        target: /usr/share/logstash/config/logstash.yml
-        read_only: true
-      - type: bind
-        source: ./elk/logstash/pipeline
-        target: /usr/share/logstash/pipeline
-        read_only: true
-    ports:
-      - "5088:5044"
-      - "8000:5000/tcp"
-      - "8000:5000/udp"
-      - "9600:9600"
-    environment:
-      LS_JAVA_OPTS: "-Xmx256m -Xms256m"
-    networks:
-      - elastic
-    depends_on:
-      - elasticsearch
-
   kibana:
     container_name: kibana
     build:
