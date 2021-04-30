@@ -14,18 +14,6 @@ services:
     networks: 
       - elastic
 
-  # hadoop:
-  #   image: harisekhon/hadoop:${VERSION:-latest}
-  #   container_name: hadoop
-  #   ports:
-  #     - 8042:8042
-  #     - 8088:8088
-  #     - 19888:19888
-  #     - 50070:50070
-  #     - 50075:50075
-  #   networks: 
-  #     - elastic
-
   hadoop-filebeat:
     container_name: hadoop-filebeat
     build:
@@ -58,25 +46,7 @@ services:
       - 5000:8080
     networks:
       - elastic
-  
-  
-  # filebeat:
-  #   image: docker.elastic.co/beats/filebeat:7.10.1
-  #   container_name: filebeat
-  #   entrypoint: "filebeat -e -strict.perms=false"
-  #   environment: 
-  #     - user=root
-  #   depends_on:
-  #     - hadoop
-  #     - spark
-  #     - elasticsearch
-  #   volumes: 
-  #     - ./filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
-  #   ports:
-  #     - 5044:5044
-  #   networks: 
-  #     - elastic
-    
+
 
   
 volumes:
