@@ -1,0 +1,100 @@
+version: "3.2"
+services:
+  spark:
+    container_name: spark
+    build: 
+      context: ./spark_conf
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8888
+    environment: 
+      JUPYTER_TOKEN: easy
+    volumes: 
+      - .:/home/jovyan/
+    networks: 
+      - elastic
+
+  hadoop:
+    container_name: hadoop-filebeat
+    build:
+      context: ./hadoop
+      dockerfile: Dockerfile
+    environment:
+      - privileged
+      - container=docker
+    ports:
+      - 8042:8042
+      - 8088:8088
+      - 19888:19888
+      - 50070:50070
+      - 50075:50075
+      - 5044:5044
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup
+    networks:
+      - elastic
+
+  nifi:
+    image: apache/nifi
+    container_name: nifi
+    volumes: 
+      - ./hadoop_conf:/opt/nifi/nifi-current/output
+    ports:
+      - 5000:8080
+    networks:
+      - elastic
+  
+  elasticsearch:
+    container_name: elasticsearch
+    build:
+      context: elk/elasticsearch/
+      args:
+        ELK_VERSION: $ELK_VERSION
+    volumes:
+      - type: bind
+        source: ./elk/elasticsearch/config/elasticsearch.yml
+        target: /usr/share/elasticsearch/config/elasticsearch.yml
+        read_only: true
+      - type: volume
+        source: elasticsearch
+        target: /usr/share/elasticsearch/data
+    ports:
+      - 9400:9200
+      - 9300:9300
+    environment:
+      ES_JAVA_OPTS: "-Xmx256m -Xms256m"
+      ELASTIC_PASSWORD: elastic@1234
+      discovery.type: single-node
+    networks:
+      - elastic
+    depends_on:
+      - spark
+      - hadoop
+      - nifi
+
+  kibana:
+    container_name: kibana
+    build:
+      context: elk/kibana/
+      args:
+        ELK_VERSION: $ELK_VERSION
+    volumes:
+      - type: bind
+        source: ./elk/kibana/config/kibana.yml
+        target: /usr/share/kibana/config/kibana.yml
+        read_only: true
+    ports:
+      - 5600:5601
+    networks:
+      - elastic
+    depends_on:
+      - elasticsearch
+  
+volumes:
+  data01:
+    driver: local
+  elasticsearch:
+
+networks:
+  elastic:
+    driver: bridge
