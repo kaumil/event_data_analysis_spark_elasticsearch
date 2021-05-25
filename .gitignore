@@ -10,4 +10,7 @@
 .bash_history
 .python_history
 .wget-hsts
+/.vscode/*
+/.vscode-server/*
+.gitconfig
 *.pyc
